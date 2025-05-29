@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="main-container">
+    <h1>主应用</h1>
+
+    <div id="subapp-container"></div> 
+    <div id="subapp-container2">
+       <div id="user-info"></div>
+    </div>
+   
+  </div>
+  <script>
+
+    // 简化版 mini-qiankun 主函数，支持多子应用和通信机制
+
+const microApps = {};
+const globalState = {};
+const listeners = new Set();
+
+function setGlobalState(newState) {
+  Object.assign(globalState, newState);
+  listeners.forEach(fn => fn(globalState));
+}
+
+function onGlobalStateChange(fn) {
+  listeners.add(fn);
+  return () => listeners.delete(fn);
+}
+
+async function loadMicroApp({ name, entry, container, sandbox = true }) {
+  if (microApps[name]) {
+    console.warn(`${name} is already loaded.`);
+    return;
+  }
+
+  const html = await fetch(entry).then(res => res.text());
+
+  const scriptMatches = html.match(/<script>([\s\S]*?)<\/script>/);
+  const script = scriptMatches ? scriptMatches[1] : '';
+
+  const bodyContent = html.match(/<body[^>]*>([\s\S]*?)<\/body>/)?.[1] || '';
+
+  const appContainer = document.createElement('div');
+  appContainer.id = `subapp-${name}`;
+  appContainer.innerHTML = bodyContent;
+  container.appendChild(appContainer);
+
+  const fakeWindow = {};
+  const proxy = new Proxy(fakeWindow, {
+    get(target, prop) {
+      if (prop === 'window' || prop === 'self') return proxy;
+      return window[prop];
+    },
+    set(target, prop, value) {
+      window[prop] = value;
+      return true;
+    }
+  });
+
+  const codeToRun = sandbox ? `with (sandbox) { ${script} }` : script;
+  const runScript = new Function('sandbox', codeToRun);
+  runScript(proxy);
+
+  if (proxy.mount) {
+    proxy.mount({
+      container: appContainer,
+      setGlobalState,
+      onGlobalStateChange
+    });
+  }
+
+  microApps[name] = {
+    unmount: proxy.unmount,
+    container: appContainer
+  };
+
+  return () => unloadMicroApp(name);
+}
+
+function unloadMicroApp(name) {
+  const app = microApps[name];
+  if (app) {
+    if (app.unmount) app.unmount();
+    app.container.remove();
+    delete microApps[name];
+  }
+}
+
+
+const container = document.getElementById('subapp-container');
+
+loadMicroApp({
+  name: 'micro-app',
+  entry: 'http://localhost:8080/index.html',  // 这里是你启动的 micro-app 地址
+  container
+});
+
+loadMicroApp({
+  name: 'micro-app2',
+  entry: 'http://localhost:9015',  // 这里是你启动的 micro-app 地址
+  container: document.querySelector('#subapp-container2')
+});
+
+setGlobalState({ user: 'Alice' });
+
+
+// export {
+//   loadMicroApp,
+//   unloadMicroApp,
+//   setGlobalState,
+//   onGlobalStateChange
+// };
+
+  </script>
+</body>
+</html>

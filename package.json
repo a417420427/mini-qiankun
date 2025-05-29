@@ -1,0 +1,34 @@
+{
+  "name": "mini-qiankun",
+  "version": "0.1.0",
+  "description": "A mini qiankun-like micro frontend loader",
+  "main": "dist/mini-qiankun.umd.js",
+  "module": "dist/mini-qiankun.es.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/mini-qiankun.es.js",
+      "require": "./dist/mini-qiankun.umd.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "microfrontend",
+    "qiankun",
+    "sandbox",
+    "vite"
+  ],
+  "author": "zf",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
