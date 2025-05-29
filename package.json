@@ -9,8 +9,7 @@
   "exports": {
     ".": {
       "import": "./dist/mini-qiankun.es.js",
-      "require": "./dist/mini-qiankun.umd.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/mini-qiankun.umd.js"
     }
   },
   "files": [
