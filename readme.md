@@ -1,6 +1,6 @@
 # @a417420427/mini-qiankun
 
-📖 Available languages: [简体中文](./README.zh.md)
+📖 Available languages: [简体中文](./readme.zh.md)
 
 🧩 A minimal micro frontend loader inspired by [qiankun](https://qiankun.umijs.org/), built with TypeScript and designed for educational and lightweight use cases.
 
