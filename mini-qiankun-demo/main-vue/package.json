@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@a417420427/mini-qiankun": "^0.1.1",
+    "@a417420427/mini-qiankun": "^0.1.2",
     "vue": "^3.5.13"
   },
   "devDependencies": {

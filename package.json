@@ -1,6 +1,6 @@
 {
   "name": "@a417420427/mini-qiankun",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A mini qiankun-like micro frontend loader",
   "main": "dist/mini-qiankun.ejs.js",
   "module": "dist/mini-qiankun.es.js",
