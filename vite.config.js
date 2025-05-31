@@ -17,10 +17,10 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      entry: './src/index.js',
+      entry: 'src/index.js',
       name: 'MiniQiankun',
-      fileName: 'mini-qiankun',
-      formats: ['es', 'umd']
+      formats: ['es', 'cjs'],  // 只生成这两种
+      fileName: (format) => `mini-qiankun.${format}.js`
     }
   }
 });

@@ -2,14 +2,14 @@
   "name": "@a417420427/mini-qiankun",
   "version": "0.1.1",
   "description": "A mini qiankun-like micro frontend loader",
-  "main": "dist/mini-qiankun.umd.js",
+  "main": "dist/mini-qiankun.ejs.js",
   "module": "dist/mini-qiankun.es.js",
   "types": "dist/index.d.ts",
-  "type": "module",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/mini-qiankun.es.js",
-      "require": "./dist/mini-qiankun.umd.js"
+      "require": "./dist/mini-qiankun.ejs.js"
     }
   },
   "files": [
